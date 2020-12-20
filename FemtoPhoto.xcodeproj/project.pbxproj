@@ -1,0 +1,540 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3010624E258D578300014473 /* FemtoPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010623B258D578000014473 /* FemtoPhotoApp.swift */; };
+		3010624F258D578300014473 /* FemtoPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010623B258D578000014473 /* FemtoPhotoApp.swift */; };
+		30106250258D578300014473 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010623C258D578000014473 /* ContentView.swift */; };
+		30106251258D578300014473 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010623C258D578000014473 /* ContentView.swift */; };
+		30106252258D578300014473 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3010623D258D578300014473 /* Assets.xcassets */; };
+		30106253258D578300014473 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3010623D258D578300014473 /* Assets.xcassets */; };
+		3010625F258D579C00014473 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010625E258D579C00014473 /* RendererView.swift */; };
+		30106260258D579C00014473 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3010625E258D579C00014473 /* RendererView.swift */; };
+		30106264258D582500014473 /* RendererView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106263258D582500014473 /* RendererView+SwiftUI.swift */; };
+		30106265258D582500014473 /* RendererView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106263258D582500014473 /* RendererView+SwiftUI.swift */; };
+		30106269258D598D00014473 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106268258D598D00014473 /* Shaders.metal */; };
+		3010626A258D598D00014473 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106268258D598D00014473 /* Shaders.metal */; };
+		30106273258E2A1500014473 /* LightTracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106272258E2A1500014473 /* LightTracer.swift */; };
+		30106274258E2A1500014473 /* LightTracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106272258E2A1500014473 /* LightTracer.swift */; };
+		30106278258E307800014473 /* Intersection.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106277258E307800014473 /* Intersection.metal */; };
+		30106279258E307800014473 /* Intersection.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106277258E307800014473 /* Intersection.metal */; };
+		30106281258E31C100014473 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106280258E31C100014473 /* Structs.swift */; };
+		30106282258E31C100014473 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30106280258E31C100014473 /* Structs.swift */; };
+		30106286258E31CD00014473 /* Structs.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106285258E31CD00014473 /* Structs.metal */; };
+		30106287258E31CD00014473 /* Structs.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30106285258E31CD00014473 /* Structs.metal */; };
+		30B00B6D258E3DCB0021BBA9 /* Helpers.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30B00B6C258E3DCB0021BBA9 /* Helpers.metal */; };
+		30B00B6E258E3DCB0021BBA9 /* Helpers.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30B00B6C258E3DCB0021BBA9 /* Helpers.metal */; };
+		30B00B72258E453D0021BBA9 /* RayShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30B00B71258E453D0021BBA9 /* RayShaders.metal */; };
+		30B00B73258E453D0021BBA9 /* RayShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30B00B71258E453D0021BBA9 /* RayShaders.metal */; };
+		30B23BB2258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B23BB1258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift */; };
+		30B23BBB258F894D00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B23BB1258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift */; };
+		30B23BC4258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */; };
+		30B23BC5258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */; };
+		30D8E1A3258E81BF00BCE90E /* BRDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D8E1A2258E81BF00BCE90E /* BRDF.metal */; };
+		30D8E1A4258E81BF00BCE90E /* BRDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D8E1A2258E81BF00BCE90E /* BRDF.metal */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3010623B258D578000014473 /* FemtoPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FemtoPhotoApp.swift; sourceTree = "<group>"; };
+		3010623C258D578000014473 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3010623D258D578300014473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		30106242258D578300014473 /* FemtoPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30106245258D578300014473 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3010624A258D578300014473 /* FemtoPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3010624C258D578300014473 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3010624D258D578300014473 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		3010625E258D579C00014473 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
+		30106263258D582500014473 /* RendererView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererView+SwiftUI.swift"; sourceTree = "<group>"; };
+		30106268258D598D00014473 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		30106272258E2A1500014473 /* LightTracer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTracer.swift; sourceTree = "<group>"; };
+		30106277258E307800014473 /* Intersection.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Intersection.metal; sourceTree = "<group>"; };
+		30106280258E31C100014473 /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		30106285258E31CD00014473 /* Structs.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Structs.metal; sourceTree = "<group>"; };
+		30B00B6C258E3DCB0021BBA9 /* Helpers.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Helpers.metal; sourceTree = "<group>"; };
+		30B00B71258E453D0021BBA9 /* RayShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = RayShaders.metal; sourceTree = "<group>"; };
+		30B23BB1258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTLComputeCommandEncoder+Dispatch.swift"; sourceTree = "<group>"; };
+		30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTLComputeCommandEncoder+Parameters.swift"; sourceTree = "<group>"; };
+		30D8E1A2258E81BF00BCE90E /* BRDF.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BRDF.metal; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3010623F258D578300014473 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30106247258D578300014473 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		30106235258D578000014473 = {
+			isa = PBXGroup;
+			children = (
+				3010623A258D578000014473 /* Shared */,
+				30106244258D578300014473 /* iOS */,
+				3010624B258D578300014473 /* macOS */,
+				30106243258D578300014473 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3010623A258D578000014473 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				30106271258E2A0100014473 /* LightTracing */,
+				3010623B258D578000014473 /* FemtoPhotoApp.swift */,
+				3010623C258D578000014473 /* ContentView.swift */,
+				3010623D258D578300014473 /* Assets.xcassets */,
+				3010625E258D579C00014473 /* RendererView.swift */,
+				30106263258D582500014473 /* RendererView+SwiftUI.swift */,
+				30106268258D598D00014473 /* Shaders.metal */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		30106243258D578300014473 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30106242258D578300014473 /* FemtoPhoto.app */,
+				3010624A258D578300014473 /* FemtoPhoto.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		30106244258D578300014473 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				30106245258D578300014473 /* Info.plist */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		3010624B258D578300014473 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				3010624C258D578300014473 /* Info.plist */,
+				3010624D258D578300014473 /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		30106271258E2A0100014473 /* LightTracing */ = {
+			isa = PBXGroup;
+			children = (
+				30106272258E2A1500014473 /* LightTracer.swift */,
+				3010628A258E31D100014473 /* Shaders */,
+				30ED299B258E3A9100C2F973 /* Extensions */,
+			);
+			path = LightTracing;
+			sourceTree = "<group>";
+		};
+		3010628A258E31D100014473 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				30106280258E31C100014473 /* Structs.swift */,
+				30106285258E31CD00014473 /* Structs.metal */,
+				30B00B6C258E3DCB0021BBA9 /* Helpers.metal */,
+				30106277258E307800014473 /* Intersection.metal */,
+				30D8E1A2258E81BF00BCE90E /* BRDF.metal */,
+				30B00B71258E453D0021BBA9 /* RayShaders.metal */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		30ED299B258E3A9100C2F973 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				30B23BB1258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift */,
+				30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		30106241258D578300014473 /* FemtoPhoto (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (iOS)" */;
+			buildPhases = (
+				3010623E258D578300014473 /* Sources */,
+				3010623F258D578300014473 /* Frameworks */,
+				30106240258D578300014473 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FemtoPhoto (iOS)";
+			productName = "FemtoPhoto (iOS)";
+			productReference = 30106242258D578300014473 /* FemtoPhoto.app */;
+			productType = "com.apple.product-type.application";
+		};
+		30106249258D578300014473 /* FemtoPhoto (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (macOS)" */;
+			buildPhases = (
+				30106246258D578300014473 /* Sources */,
+				30106247258D578300014473 /* Frameworks */,
+				30106248258D578300014473 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FemtoPhoto (macOS)";
+			productName = "FemtoPhoto (macOS)";
+			productReference = 3010624A258D578300014473 /* FemtoPhoto.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		30106236258D578000014473 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
+				TargetAttributes = {
+					30106241258D578300014473 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					30106249258D578300014473 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+				};
+			};
+			buildConfigurationList = 30106239258D578000014473 /* Build configuration list for PBXProject "FemtoPhoto" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 30106235258D578000014473;
+			productRefGroup = 30106243258D578300014473 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				30106241258D578300014473 /* FemtoPhoto (iOS) */,
+				30106249258D578300014473 /* FemtoPhoto (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		30106240258D578300014473 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30106252258D578300014473 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30106248258D578300014473 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30106253258D578300014473 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3010623E258D578300014473 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30106281258E31C100014473 /* Structs.swift in Sources */,
+				3010625F258D579C00014473 /* RendererView.swift in Sources */,
+				30B00B6D258E3DCB0021BBA9 /* Helpers.metal in Sources */,
+				30106264258D582500014473 /* RendererView+SwiftUI.swift in Sources */,
+				30B23BC4258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */,
+				30106250258D578300014473 /* ContentView.swift in Sources */,
+				3010624E258D578300014473 /* FemtoPhotoApp.swift in Sources */,
+				30106278258E307800014473 /* Intersection.metal in Sources */,
+				30D8E1A3258E81BF00BCE90E /* BRDF.metal in Sources */,
+				30106286258E31CD00014473 /* Structs.metal in Sources */,
+				30106269258D598D00014473 /* Shaders.metal in Sources */,
+				30B23BB2258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift in Sources */,
+				30106273258E2A1500014473 /* LightTracer.swift in Sources */,
+				30B00B72258E453D0021BBA9 /* RayShaders.metal in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		30106246258D578300014473 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30B00B73258E453D0021BBA9 /* RayShaders.metal in Sources */,
+				30106282258E31C100014473 /* Structs.swift in Sources */,
+				30B00B6E258E3DCB0021BBA9 /* Helpers.metal in Sources */,
+				30106260258D579C00014473 /* RendererView.swift in Sources */,
+				30B23BC5258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */,
+				30106265258D582500014473 /* RendererView+SwiftUI.swift in Sources */,
+				30106251258D578300014473 /* ContentView.swift in Sources */,
+				30B23BBB258F894D00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift in Sources */,
+				3010624F258D578300014473 /* FemtoPhotoApp.swift in Sources */,
+				30106279258E307800014473 /* Intersection.metal in Sources */,
+				30106287258E31CD00014473 /* Structs.metal in Sources */,
+				30D8E1A4258E81BF00BCE90E /* BRDF.metal in Sources */,
+				3010626A258D598D00014473 /* Shaders.metal in Sources */,
+				30106274258E2A1500014473 /* LightTracer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		30106254258D578300014473 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		30106255258D578300014473 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		30106257258D578300014473 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
+				PRODUCT_NAME = FemtoPhoto;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		30106258258D578300014473 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
+				PRODUCT_NAME = FemtoPhoto;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3010625A258D578300014473 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
+				PRODUCT_NAME = FemtoPhoto;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3010625B258D578300014473 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
+				PRODUCT_NAME = FemtoPhoto;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		30106239258D578000014473 /* Build configuration list for PBXProject "FemtoPhoto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30106254258D578300014473 /* Debug */,
+				30106255258D578300014473 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30106257258D578300014473 /* Debug */,
+				30106258258D578300014473 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3010625A258D578300014473 /* Debug */,
+				3010625B258D578300014473 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 30106236258D578000014473 /* Project object */;
+}
