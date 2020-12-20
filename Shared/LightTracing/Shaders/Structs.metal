@@ -13,6 +13,9 @@ struct Primitive {
     packed_float2 dst;
 };
 
+/// Light ray.
+/// Can be inactive if previous rays did not intersect.
+/// This state is denoted by angle being NaN.
 struct Ray {
     packed_float2 origin;
     float angle;
@@ -27,3 +30,11 @@ struct Intersection {
     uint32_t primitive_index;
     float surface_normal;
 };
+
+inline bool did_intersect(Intersection intersection) {
+    return intersection.primitive_index != __UINT32_MAX__;
+}
+
+inline bool is_disabled(Ray ray) {
+    return isnan(ray.angle);
+}

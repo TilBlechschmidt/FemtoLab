@@ -37,6 +37,8 @@
 		30B23BC5258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */; };
 		30D8E1A3258E81BF00BCE90E /* BRDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D8E1A2258E81BF00BCE90E /* BRDF.metal */; };
 		30D8E1A4258E81BF00BCE90E /* BRDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 30D8E1A2258E81BF00BCE90E /* BRDF.metal */; };
+		30F5BE4F258F8D5700A70D88 /* LightRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F5BE4E258F8D5700A70D88 /* LightRenderer.swift */; };
+		30F5BE50258F8D5700A70D88 /* LightRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F5BE4E258F8D5700A70D88 /* LightRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,7 @@
 		30B23BB1258F877A00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTLComputeCommandEncoder+Dispatch.swift"; sourceTree = "<group>"; };
 		30B23BC3258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MTLComputeCommandEncoder+Parameters.swift"; sourceTree = "<group>"; };
 		30D8E1A2258E81BF00BCE90E /* BRDF.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BRDF.metal; sourceTree = "<group>"; };
+		30F5BE4E258F8D5700A70D88 /* LightRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				30106272258E2A1500014473 /* LightTracer.swift */,
+				30F5BE4E258F8D5700A70D88 /* LightRenderer.swift */,
 				3010628A258E31D100014473 /* Shaders */,
 				30ED299B258E3A9100C2F973 /* Extensions */,
 			);
@@ -265,6 +269,7 @@
 				30106264258D582500014473 /* RendererView+SwiftUI.swift in Sources */,
 				30B23BC4258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */,
 				30106250258D578300014473 /* ContentView.swift in Sources */,
+				30F5BE4F258F8D5700A70D88 /* LightRenderer.swift in Sources */,
 				3010624E258D578300014473 /* FemtoPhotoApp.swift in Sources */,
 				30106278258E307800014473 /* Intersection.metal in Sources */,
 				30D8E1A3258E81BF00BCE90E /* BRDF.metal in Sources */,
@@ -286,6 +291,7 @@
 				30106260258D579C00014473 /* RendererView.swift in Sources */,
 				30B23BC5258F8A8000E3E6F5 /* MTLComputeCommandEncoder+Parameters.swift in Sources */,
 				30106265258D582500014473 /* RendererView+SwiftUI.swift in Sources */,
+				30F5BE50258F8D5700A70D88 /* LightRenderer.swift in Sources */,
 				30106251258D578300014473 /* ContentView.swift in Sources */,
 				30B23BBB258F894D00E3E6F5 /* MTLComputeCommandEncoder+Dispatch.swift in Sources */,
 				3010624F258D578300014473 /* FemtoPhotoApp.swift in Sources */,

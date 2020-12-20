@@ -8,7 +8,9 @@
 import SwiftUI
 
 import Metal
-let tracer = (try! LightTracer())!
+
+let tracer = try! LightTracer()
+let renderer = try! LightRenderer(commandQueue: tracer.commandQueue)
 
 struct ContentView: View {
     var body: some View {
@@ -21,7 +23,16 @@ struct ContentView: View {
 
     func testing() {
         print("Hello world!")
-        tracer.run()
+
+        let captureManager = MTLCaptureManager.shared()
+        let captureDescriptor = MTLCaptureDescriptor()
+        captureDescriptor.captureObject = MTLCreateSystemDefaultDevice()!
+        try! captureManager.startCapture(with: captureDescriptor)
+
+        try! tracer.run()
+        renderer.run(data: tracer.rayData)
+        
+        captureManager.stopCapture()
     }
 }
 

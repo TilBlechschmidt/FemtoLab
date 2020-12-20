@@ -19,153 +19,162 @@ fileprivate func generateRays(origin: Float2, count: Int, initialAngle: Double =
     }
 }
 
+struct TracerConfiguration {
+    let batchSize: Int
+    let batchCount: Int
+    let lightPathLength: Int
+
+    var raysPerBounce: Int {
+        batchSize * batchCount
+    }
+
+    var rayCount: Int {
+        raysPerBounce * lightPathLength
+    }
+
+    var batchSideLength: Int {
+        Int(Double(batchSize).squareRoot())
+    }
+
+    init(batchSize: Int = 1024, batchCount: Int = 1, lightPathLength: Int = 2) {
+        let batchSqrt = Double(batchSize).squareRoot()
+        guard batchSqrt.rounded() == batchSqrt else { fatalError("Batch size is not a squared number!") }
+
+        self.batchSize = batchSize
+        self.batchCount = batchCount
+        self.lightPathLength = lightPathLength
+    }
+}
+
 class LightTracer {
-    let device: MTLDevice
-    let commandQueue: MTLCommandQueue
+    public enum Error: Swift.Error {
+        case deviceInitializationFailed
+        case libraryUnavailable
+        case bufferAllocationFailed
+        case deviceFamilyUnsupported
+        case commandBufferCreationFailed
+    }
 
-    let intersectionPipelineState: MTLComputePipelineState
-    let brdfPipelineState: MTLComputePipelineState
+    static let supportedGPUFamilies: [MTLGPUFamily] = [.apple5, .mac1, .macCatalyst1]
 
-    let primitiveBuffer: MTLBuffer
-    let rayBuffer: MTLBuffer
-    let intersectionBuffer: MTLBuffer
+    public let config: TracerConfiguration
+    public var rayData: RayData {
+        RayData(config: config, rayBuffer: rayBuffer, intersectionBuffer: intersectionBuffer)
+    }
 
-    let renderPipelineState: MTLRenderPipelineState
-    let texture: MTLTexture
+    public let device: MTLDevice
+    public let commandQueue: MTLCommandQueue
 
-    let multiplier = 32
-    let bounceLimit = 2
+    private let intersectionPipelineState: MTLComputePipelineState
+    private let brdfPipelineState: MTLComputePipelineState
 
-    init?(device: MTLDevice? = MTLCreateSystemDefaultDevice()) throws {
-        guard let device = device,
-              let library = device.makeDefaultLibrary(),
-              let computeIntersection = library.makeFunction(name: "computeIntersection"),
-              let computeBRDF = library.makeFunction(name: "computeBRDF"),
-              let vertexShader = library.makeFunction(name: "vertexFunction"),
-              let fragmentShader = library.makeFunction(name: "fragmentFunction"),
-              let commandQueue = device.makeCommandQueue() else {
-            return nil
+    private let primitiveBuffer: MTLBuffer
+    private let rayBuffer: MTLBuffer
+    private let intersectionBuffer: MTLBuffer
+
+    convenience init(config: TracerConfiguration = TracerConfiguration()) throws {
+        guard let device = MTLCreateSystemDefaultDevice(), let commandQueue = device.makeCommandQueue() else {
+            throw Error.deviceInitializationFailed
         }
 
-        self.device = device
+        try self.init(commandQueue: commandQueue, config: config)
+    }
+
+    init(commandQueue: MTLCommandQueue, config: TracerConfiguration) throws {
+        device = commandQueue.device
         self.commandQueue = commandQueue
+        self.config = config
+
+        guard let library = device.makeDefaultLibrary(),
+              let computeIntersection = library.makeFunction(name: "computeIntersection"),
+              let computeBRDF = library.makeFunction(name: "computeBRDF") else {
+            throw Error.libraryUnavailable
+        }
 
         intersectionPipelineState = try device.makeComputePipelineState(function: computeIntersection)
         brdfPipelineState = try device.makeComputePipelineState(function: computeBRDF)
 
-        let textureDescriptor = MTLTextureDescriptor()
-        textureDescriptor.textureType = MTLTextureType.type2D
-        textureDescriptor.width = 2048
-        textureDescriptor.height = 2048
-        textureDescriptor.pixelFormat = .rgba32Float
-        textureDescriptor.storageMode = .private
-        textureDescriptor.usage = [.renderTarget, .shaderWrite]
-        guard let texture = device.makeTexture(descriptor: textureDescriptor) else { return nil }
-        self.texture = texture
-
-        let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
-        renderPipelineDescriptor.vertexFunction = vertexShader
-        renderPipelineDescriptor.fragmentFunction = fragmentShader
-        renderPipelineDescriptor.colorAttachments[0].pixelFormat = textureDescriptor.pixelFormat
-        renderPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
-        renderPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one
-        renderPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .one
-        renderPipelineState = try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
-
         let primitiveCount = 1
-        let emittedRayCount = multiplier * multiplier * multiplier * multiplier
-        let rayCount = emittedRayCount * bounceLimit
 
         let primitivesData = [
-            Primitive(src: (1024, 512), dst: (512, -512))
+            Primitive(src: (512, 512), dst: (512, -512))
         ]
 
-        let rayData = generateRays(origin: (0, 0), count: emittedRayCount, initialAngle: -Double.pi / 4, range: Double.pi / 2) + Array(repeating: Ray.zero, count: emittedRayCount * (bounceLimit - 1))
+        let firstRayBatch = generateRays(origin: (0, 0), count: config.raysPerBounce, initialAngle: -Double.pi / 4, range: Double.pi / 2)
+        let emptyRayBatches = Array(repeating: Ray.zero, count: config.raysPerBounce * (config.lightPathLength - 1))
+        let rayData = firstRayBatch + emptyRayBatches
 
         guard let primitiveBuffer = device.makeBuffer(bytes: primitivesData, length: Primitive.size * primitiveCount, options: [.storageModeShared]),
-              let rayBuffer = device.makeBuffer(bytes: rayData, length: Ray.size * rayCount, options: [.storageModeShared]),
-              let intersectionBuffer = device.makeBuffer(length: Intersection.size * rayCount, options: [.storageModePrivate]) else {
-            return nil
+              let rayBuffer = device.makeBuffer(bytes: rayData, length: Ray.size * config.rayCount, options: [.storageModeShared]),
+              let intersectionBuffer = device.makeBuffer(length: Intersection.size * config.rayCount, options: [.storageModePrivate]) else {
+            throw Error.bufferAllocationFailed
         }
 
         self.primitiveBuffer = primitiveBuffer
         self.rayBuffer = rayBuffer
         self.intersectionBuffer = intersectionBuffer
 
-        print(device.maxThreadsPerThreadgroup)
-        print(intersectionPipelineState.threadExecutionWidth)
-        print(intersectionPipelineState.maxTotalThreadsPerThreadgroup)
-        print("Rendering \(rayCount) rays")
-
-        let supportedFamilies: [MTLGPUFamily] = [.apple5, .mac1, .macCatalyst1]
-        let gpuSupported = supportedFamilies.reduce(false) { $0 || device.supportsFamily($1) }
-        if !gpuSupported { fatalError("GPU Family not supported — missing feature: non-uniform threadgroups") }
+        let gpuSupported = LightTracer.supportedGPUFamilies.reduce(false) { $0 || device.supportsFamily($1) }
+        if !gpuSupported {
+            throw Error.deviceFamilyUnsupported
+        }
     }
 
-    func run() {
-        let captureManager = MTLCaptureManager.shared()
-        let captureDescriptor = MTLCaptureDescriptor()
-        captureDescriptor.captureObject = device
-        try! captureManager.startCapture(with: captureDescriptor)
+    func run() throws {
+        var commandBuffer: MTLCommandBuffer?
 
-        guard let commandBuffer = commandQueue.makeCommandBuffer() else {
-            return
+        for i in 0..<config.batchCount {
+            commandBuffer = try enqueue(batch: i)
         }
 
-        calculateIntersections(commandBuffer, bufferOffset: 0)
-        calculateBRDF(commandBuffer)
-        calculateIntersections(commandBuffer, bufferOffset: Ray.size * multiplier * multiplier * multiplier * multiplier)
-        renderRays(commandBuffer)
+        commandBuffer?.waitUntilCompleted()
+    }
+
+    func enqueue(batch batchID: Int) throws -> MTLCommandBuffer {
+        guard let commandBuffer = commandQueue.makeCommandBuffer() else {
+            throw Error.commandBufferCreationFailed
+        }
+
+        commandBuffer.label = "Light tracing batch #\(batchID)"
+
+        for bounceID in 0..<config.lightPathLength {
+            calculateIntersections(commandBuffer, batchID, bounceID)
+            calculateBRDF(commandBuffer, batchID, bounceID)
+        }
 
         commandBuffer.commit()
-        commandBuffer.waitUntilCompleted()
-        print("Intersection done! \(commandBuffer.gpuEndTime - commandBuffer.gpuStartTime)")
-
-        captureManager.stopCapture()
+        return commandBuffer
     }
 
-    func calculateIntersections(_ commandBuffer: MTLCommandBuffer, bufferOffset: Int) {
+    func calculateIntersections(_ commandBuffer: MTLCommandBuffer, _ batchID: Int, _ bounceID: Int) {
+        let indexOffset = (config.batchSize * batchID + config.raysPerBounce * bounceID)
+
         guard let commandEncoder = commandBuffer.makeComputeCommandEncoder() else {
             return
         }
 
-        commandEncoder.label = "Calculate intersections"
+        commandEncoder.label = "Intersections bounce #\(bounceID)"
 
         commandEncoder.setComputePipelineState(intersectionPipelineState)
-        commandEncoder.setBuffers([primitiveBuffer, rayBuffer, intersectionBuffer], offsets: [0, bufferOffset, bufferOffset])
-        commandEncoder.dispatch(sideLength: multiplier * multiplier, computePipelineState: intersectionPipelineState)
+        commandEncoder.setBuffers([primitiveBuffer, rayBuffer, intersectionBuffer], offsets: [0, indexOffset * Ray.size, indexOffset * Intersection.size])
+        commandEncoder.dispatch(sideLength: config.batchSideLength, computePipelineState: intersectionPipelineState)
         commandEncoder.endEncoding()
     }
 
-    func calculateBRDF(_ commandBuffer: MTLCommandBuffer) {
-        guard let commandEncoder = commandBuffer.makeComputeCommandEncoder() else {
+    func calculateBRDF(_ commandBuffer: MTLCommandBuffer, _ batchID: Int, _ bounceID: Int) {
+        let sourceIndexOffset = (config.batchSize * batchID + config.raysPerBounce * bounceID)
+        let destinationIndexOffset = (config.batchSize * batchID + config.raysPerBounce * (bounceID + 1))
+
+        // Skip BRDF calculation for the last bounce. It is not needed because the rays won't be reflected anymore.
+        guard bounceID < config.lightPathLength - 1, let commandEncoder = commandBuffer.makeComputeCommandEncoder() else {
             return
         }
 
-        commandEncoder.label = "Calculate BRDF"
+        commandEncoder.label = "BRDF bounce #\(bounceID)"
 
         commandEncoder.setComputePipelineState(brdfPipelineState)
-        commandEncoder.setBuffers([rayBuffer, intersectionBuffer])
-        commandEncoder.dispatch(sideLength: multiplier * multiplier, computePipelineState: brdfPipelineState)
-        commandEncoder.endEncoding()
-    }
-
-    func renderRays(_ commandBuffer: MTLCommandBuffer) {
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        renderPassDescriptor.colorAttachments[0].texture = texture
-        renderPassDescriptor.colorAttachments[0].loadAction = .clear
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        renderPassDescriptor.colorAttachments[0].storeAction = .store
-
-        guard let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
-
-        commandEncoder.label = "Render rays"
-
-        commandEncoder.setRenderPipelineState(renderPipelineState)
-        commandEncoder.setVertexBuffer(rayBuffer, offset: 0, index: 0)
-        commandEncoder.setVertexBuffer(intersectionBuffer, offset: 0, index: 1)
-        commandEncoder.drawPrimitives(type: .line, vertexStart: 0, vertexCount: multiplier * multiplier * multiplier * multiplier * bounceLimit * 2)
-
+        commandEncoder.setBuffers([rayBuffer, rayBuffer, intersectionBuffer], offsets: [sourceIndexOffset * Ray.size, destinationIndexOffset * Ray.size, sourceIndexOffset * Intersection.size])
+        commandEncoder.dispatch(sideLength: config.batchSideLength, computePipelineState: brdfPipelineState)
         commandEncoder.endEncoding()
     }
 }
