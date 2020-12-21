@@ -45,9 +45,9 @@
 		3010623B258D578000014473 /* FemtoPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FemtoPhotoApp.swift; sourceTree = "<group>"; };
 		3010623C258D578000014473 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3010623D258D578300014473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		30106242258D578300014473 /* FemtoPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30106242258D578300014473 /* FemtoLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30106245258D578300014473 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3010624A258D578300014473 /* FemtoPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3010624A258D578300014473 /* FemtoLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FemtoLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3010624C258D578300014473 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3010624D258D578300014473 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		3010625E258D579C00014473 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
@@ -110,8 +110,8 @@
 		30106243258D578300014473 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30106242258D578300014473 /* FemtoPhoto.app */,
-				3010624A258D578300014473 /* FemtoPhoto.app */,
+				30106242258D578300014473 /* FemtoLab.app */,
+				3010624A258D578300014473 /* FemtoLab.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,9 +169,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30106241258D578300014473 /* FemtoPhoto (iOS) */ = {
+		30106241258D578300014473 /* FemtoLab (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (iOS)" */;
+			buildConfigurationList = 30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoLab (iOS)" */;
 			buildPhases = (
 				3010623E258D578300014473 /* Sources */,
 				3010623F258D578300014473 /* Frameworks */,
@@ -181,14 +181,14 @@
 			);
 			dependencies = (
 			);
-			name = "FemtoPhoto (iOS)";
+			name = "FemtoLab (iOS)";
 			productName = "FemtoPhoto (iOS)";
-			productReference = 30106242258D578300014473 /* FemtoPhoto.app */;
+			productReference = 30106242258D578300014473 /* FemtoLab.app */;
 			productType = "com.apple.product-type.application";
 		};
-		30106249258D578300014473 /* FemtoPhoto (macOS) */ = {
+		30106249258D578300014473 /* FemtoLab (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (macOS)" */;
+			buildConfigurationList = 30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoLab (macOS)" */;
 			buildPhases = (
 				30106246258D578300014473 /* Sources */,
 				30106247258D578300014473 /* Frameworks */,
@@ -198,9 +198,9 @@
 			);
 			dependencies = (
 			);
-			name = "FemtoPhoto (macOS)";
+			name = "FemtoLab (macOS)";
 			productName = "FemtoPhoto (macOS)";
-			productReference = 3010624A258D578300014473 /* FemtoPhoto.app */;
+			productReference = 3010624A258D578300014473 /* FemtoLab.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -220,7 +220,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 30106239258D578000014473 /* Build configuration list for PBXProject "FemtoPhoto" */;
+			buildConfigurationList = 30106239258D578000014473 /* Build configuration list for PBXProject "FemtoLab" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -233,8 +233,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30106241258D578300014473 /* FemtoPhoto (iOS) */,
-				30106249258D578300014473 /* FemtoPhoto (macOS) */,
+				30106241258D578300014473 /* FemtoLab (iOS) */,
+				30106249258D578300014473 /* FemtoLab (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -431,8 +431,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
-				PRODUCT_NAME = FemtoPhoto;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoLab;
+				PRODUCT_NAME = FemtoLab;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -453,8 +453,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
-				PRODUCT_NAME = FemtoPhoto;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoLab;
+				PRODUCT_NAME = FemtoLab;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -479,8 +479,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
-				PRODUCT_NAME = FemtoPhoto;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoLab;
+				PRODUCT_NAME = FemtoLab;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -503,8 +503,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoPhoto;
-				PRODUCT_NAME = FemtoPhoto;
+				PRODUCT_BUNDLE_IDENTIFIER = de.blechschmidt.FemtoLab;
+				PRODUCT_NAME = FemtoLab;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -513,7 +513,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30106239258D578000014473 /* Build configuration list for PBXProject "FemtoPhoto" */ = {
+		30106239258D578000014473 /* Build configuration list for PBXProject "FemtoLab" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30106254258D578300014473 /* Debug */,
@@ -522,7 +522,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (iOS)" */ = {
+		30106256258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoLab (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30106257258D578300014473 /* Debug */,
@@ -531,7 +531,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoPhoto (macOS)" */ = {
+		30106259258D578300014473 /* Build configuration list for PBXNativeTarget "FemtoLab (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3010625A258D578300014473 /* Debug */,

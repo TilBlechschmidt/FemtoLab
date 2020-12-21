@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/themegatb/Developer/Apple/iOS/WWDC/2021/FemtoPhoto/FemtoLab.xcodeproj">
    </FileRef>
 </Workspace>
