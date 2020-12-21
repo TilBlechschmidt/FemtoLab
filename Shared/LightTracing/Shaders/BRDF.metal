@@ -11,60 +11,62 @@
 
 using namespace metal;
 
-float sellmeierIor(float3 b, float3 c, float lambda) {
+float sellmeierEquation(float3 b, float3 c, float lambda) {
     float lSq = (lambda * 1e-3) * (lambda * 1e-3);
-    return 1.0 + dot((b * lSq) / (lSq - c), float3(1.0));
-}
-
-struct FresnelResult {
-    float reflectance;
-    float cosThetaT;
-};
-
-FresnelResult dielectricReflectance(float eta, float cosThetaI) {
-    float cosThetaT;
-    float sinThetaTSq = eta * eta * (1.0 - cosThetaI * cosThetaI);
-    if (sinThetaTSq > 1.0) {
-        cosThetaT = 0.0;
-        return { 1.0, cosThetaT };
-    }
-    cosThetaT = sqrt(1.0 - sinThetaTSq);
-
-    float Rs = (eta * cosThetaI - cosThetaT) / (eta * cosThetaI + cosThetaT);
-    float Rp = (eta * cosThetaT - cosThetaI) / (eta * cosThetaT + cosThetaI);
-
-    return { (Rs*Rs + Rp*Rp) * 0.5, cosThetaT };
+    return 1.0 + dot((pow(b, 2) * lSq) / (lSq - pow(c, 2)), float3(1.0));
 }
 
 float sampleMirror(const device Ray &ray, const device Intersection &intersection) {
     return 2 * (intersection.surface_normal - M_PI_2_F) - ray.angle;
 }
 
-float sampleDielectric(const device Ray &ray, const device Intersection &intersection, float ior, uint32_t v0, uint32_t v1) {
-//    float eta = 1.0 / ior; // sin(intersection.surface_normal - ray.angle) < 0.0 ? ior : 1.0 / ior; // wi.y < 0.0 ? ior : 1.0 / ior;
-    FresnelResult fresnel = dielectricReflectance(1.0 / ior, cos(ray.angle));
+float sampleDielectric(device Ray &ray, const device Intersection &intersection) {
+    // Calculate wavelength dependent refraction indices for source and destination materials
+    float n_1 = 1; // sellmeierEquation(float3(1.43134930, 0.65054713, 5.3414021), float3(0.0052799261, 0.0142382647, 325.017834), ray.wavelength); // air
+    float n_2 = sellmeierEquation(float3(0.6961663, 0.4079426, 0.8974794), float3(0.0684043, 0.1162414, 9.896161), ray.wavelength); // fused silica
 
-    uint64_t rng = rand(v0, v1);
-    float random_number = float(rng) / float(__UINT32_MAX__);
+    // Calculate the incidence angle
+    // Done by "rotating" the whole coordinate system so that the surface normal is aligned with the x-axis
+    float surface_angle = intersection.surface_normal - M_PI_2_F;
+    float theta_i = M_PI_2_F - (surface_angle - ray.angle);
 
-    if (random_number < fresnel.reflectance)
-        return sampleMirror(ray, intersection);
-    else {
-        float thetaT = acos(fresnel.cosThetaT);
-        float delta = sin(ray.angle) < 0.0 ? -thetaT : thetaT;
-        return ray.angle + (intersection.surface_normal - delta);// ray.angle;
-//        float old_x = cos(ray.angle);
-//        float old_y = sin(ray.angle);
-//        float new_x = -old_x * eta;
-//        float new_y = -fresnel.cosThetaT * sign(old_y);
-//        return atan2(new_y, new_x);
-//        return ray.angle - acos(fresnel.cosThetaT);
-//        return ray.angle + acos(fresnel.cosThetaT); // float2(-wi.x*eta, -cosThetaT * sign(wi.y));
+    // Check if the angle is >90º
+    // If so, flip the whole system around so the incidence is less than 90º
+    // This is required because Snell's law does not particularly like angles larger than that (note: this is distinct from total internal reflection where theta_t is >90º).
+    // It seems like Schlick's approximation could deal with it but better to be safe than sorry!
+    bool is_flipped = cos(theta_i) < 0;
+    if (is_flipped) {
+        float tmp = n_2;
+        n_2 = n_1;
+        n_1 = tmp;
+        theta_i += M_PI_F;
     }
+
+    // Schlick's approximation to determine reflectance
+    float R_0 = pow((n_1 - n_2) / (n_1 + n_2), 2);
+    float R = R_0 + (1 - R_0) * pow(1 - cos(theta_i), 5);
+
+    // Snell's law
+    // Calculates refraction angle
+    float theta_t = asin(n_1 / n_2 * sin(theta_i));
+
+    // Account for total internal reflection and reflection based on fresnels law (or rather its approximation)
+    float random_number = rand(ray.rng_state);
+    bool total_internal_reflection = isnan(theta_t);
+    bool fresnel_probabilistic_reflection = random_number > R;
+
+    if (total_internal_reflection || fresnel_probabilistic_reflection)
+        return sampleMirror(ray, intersection);
+
+    // If we previously flipped the system, unflip it.
+    if (is_flipped) theta_t -= M_PI_F;
+
+    // Reverse the rotation we've done before
+    return -M_PI_2_F + theta_t + surface_angle;
 }
 
 kernel void computeBRDF(
-    const device Ray *source_rays [[ buffer(0) ]],
+    device Ray *source_rays [[ buffer(0) ]],
     device Ray *destination_rays [[ buffer(1) ]],
     const device Intersection *intersections [[ buffer(2) ]],
     uint2 gid [[thread_position_in_grid]],
@@ -75,19 +77,18 @@ kernel void computeBRDF(
     const device Intersection &intersection = intersections[index];
     const device Ray &sourceRay = source_rays[index];
 
-//    float ior = sellmeierIor(float3(1.6215, 0.2563, 1.6445), float3(0.0122, 0.0596, 147.4688), sourceRay.wavelength) / 1.4;
-//    1.43134930    0.65054713    5.3414021    5.2799261×10−3    1.42382647×10−2    325.017834
-    float ior = sellmeierIor(float3(1.43134930, 0.65054713, 5.3414021), float3(0.0052799261, 0.0142382647, 325.017834), sourceRay.wavelength);
-
     Ray destinationRay;
 
     if (!did_intersect(intersection) || is_disabled(sourceRay)) {
         destinationRay.angle = NAN;
     } else {
         destinationRay.origin = intersection.location;
-        destinationRay.angle = sampleDielectric(source_rays[index], intersections[index], ior, uint32_t(gid.x), uint32_t(gid.y));
+//        destinationRay.angle = sampleDielectric(source_rays[index], intersections[index], uint32_t(gid.x * index), uint32_t(gid.y * index));
+        destinationRay.angle = sampleDielectric(source_rays[index], intersections[index]);
+//        destinationRay.angle = sampleDielectric(source_rays[index], intersections[index], ior, uint32_t(gid.x), uint32_t(gid.y));
     //    destinationRay.angle = sampleMirror(source_rays[index], intersections[index]);
         destinationRay.wavelength = sourceRay.wavelength;
+        destinationRay.rng_state = sourceRay.rng_state;
     }
 
     destination_rays[index] = destinationRay;

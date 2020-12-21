@@ -40,13 +40,10 @@ vertex RasterizerData vertexShader(uint vertexID [[vertex_id]], constant packed_
     out.position.xy = pixelSpacePosition / (viewportSize / 2.0);
 
     // Pass the input color directly to the rasterizer.
-    uint32_t seed1 = vertexID;
-    uint32_t seed2 = vertexID;
+//    uint32_t seed1 = vertexID;
+//    uint32_t seed2 = vertexID;
     float correctionBias = vertices[vertexID].z;
-    float red = float(rand(seed1, seed2)) / float(__UINT32_MAX__);
-    float green = float(rand(seed1, seed2)) / float(__UINT32_MAX__);
-    float blue = float(rand(seed1, seed2)) / float(__UINT32_MAX__);
-    out.color = { red, green, blue, 0.1 * correctionBias };
+    out.color = { 1.0, 1.0, 1.0, 0.1 * correctionBias };
 
     return out;
 }

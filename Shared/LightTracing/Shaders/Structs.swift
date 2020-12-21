@@ -23,6 +23,8 @@ struct Ray {
     let angle: Float
     let wavelength: Float
 
+    let rngState: (Float, Float, Float, Float) = (Float.random(in: 0..<1), Float.random(in: 0..<1), Float.random(in: 0..<1), Float.random(in: 0..<1))
+
     static let size = MemoryLayout<Ray>.size
     static let zero = Ray(origin: (0, 0), angle: 0, wavelength: 0)
 }

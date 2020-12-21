@@ -12,16 +12,29 @@ inline uint thread_id(uint2 gid, uint2 grid_dimensions) {
     return gid.y * grid_dimensions.x + gid.x;
 }
 
-inline uint64_t rand(uint32_t v0, uint32_t v1) {
-    uint32_t sum = 0, delta = 0x9E3779b9, k0 = 0xA341316C, k1 = 0xC8013EA4, k2 = 0xAD90777D, k3 = 0x7E95761E;
+//inline uint64_t rand(uint32_t v0, uint32_t v1) {
+//    uint32_t sum = 0, delta = 0x9E3779b9, k0 = 0xA341316C, k1 = 0xC8013EA4, k2 = 0xAD90777D, k3 = 0x7E95761E;
+//
+//    for (uint i = 0; i < 32; i++) {
+//        sum += delta;
+//        v0 += ((v1 << 4) + k0) ^ (v1 + sum) ^ ((v1 >> 5) + k1);
+//        v1 += ((v0 << 4) + k2) ^ (v0 + sum) ^ ((v0 >> 5) + k3);
+//    }
+//
+//    return v1 << 16 | v0;
+//}
+inline float rand(device float4 &state) {
+    const float4 q = float4(   1225.0,    1585.0,    2457.0,    2098.0);
+    const float4 r = float4(   1112.0,     367.0,      92.0,     265.0);
+    const float4 a = float4(   3423.0,    2646.0,    1707.0,    1999.0);
+    const float4 m = float4(4194287.0, 4194277.0, 4194191.0, 4194167.0);
 
-    for (uint i = 0; i < 8; i++) {
-        sum += delta;
-        v0 += ((v1 << 4) + k0) ^ (v1 + sum) ^ ((v1 >> 5) + k1);
-        v1 += ((v0 << 4) + k2) ^ (v0 + sum) ^ ((v0 >> 5) + k3);
-    }
+    float4 beta = floor(state / q);
+    float4 p = a*(state - beta * q) - beta * r;
+    beta = (1.0 - sign(p)) * 0.5 * m;
+    state = p + beta;
 
-    return v1 << 16 | v0;
+    return fract(dot(state / m, float4(1.0, -1.0, 1.0, -1.0)));
 }
 
 // --- Color conversion

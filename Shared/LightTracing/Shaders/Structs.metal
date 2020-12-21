@@ -20,6 +20,7 @@ struct Ray {
     packed_float2 origin;
     float angle;
     float wavelength;
+    float4 rng_state;
 };
 
 /// Intersection point of a ray and a primitive.

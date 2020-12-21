@@ -36,7 +36,7 @@ struct TracerConfiguration {
         Int(Double(batchSize).squareRoot())
     }
 
-    init(batchSize: Int = 1024, batchCount: Int = 1, lightPathLength: Int = 2) {
+    init(batchSize: Int = 1024 * 1024, batchCount: Int = 1, lightPathLength: Int = 2) {
         let batchSqrt = Double(batchSize).squareRoot()
         guard batchSqrt.rounded() == batchSqrt else { fatalError("Batch size is not a squared number!") }
 
@@ -97,10 +97,14 @@ class LightTracer {
         let primitiveCount = 1
 
         let primitivesData = [
-            Primitive(src: (512, 512), dst: (512, -512))
+            Primitive(src: (512, 512), dst: (-512, 256)),
+//            Primitive(src: (512, 512), dst: (512, -512)), // right, top bottom
+//            Primitive(src: (512, -512), dst: (512, 512)), // right, bottom top
+//            Primitive(src: (0, 512), dst: (512, -512)), // right, left diagonal
+//            Primitive(src: (512, -512), dst: (0, 512)), // right, left diagonal
         ]
 
-        let firstRayBatch = generateRays(origin: (0, 0), count: config.raysPerBounce, initialAngle: -Double.pi / 4, range: Double.pi / 2)
+        let firstRayBatch = generateRays(origin: (0, 0), count: config.raysPerBounce, initialAngle: -Double.pi / 4 + Double.pi / 2, range: Double.pi / 4)
         let emptyRayBatches = Array(repeating: Ray.zero, count: config.raysPerBounce * (config.lightPathLength - 1))
         let rayData = firstRayBatch + emptyRayBatches
 
