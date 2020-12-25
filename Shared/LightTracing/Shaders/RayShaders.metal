@@ -45,7 +45,7 @@ vertex RasterizerData vertexFunction(
 
     // Pass the input color directly to the rasterizer.
     float3 color = wavelengthToRGB(ray.wavelength);
-    out.color = float4(color * 0.002 * biasCorrection, 1);
+    out.color = float4(color * 0.0002 * biasCorrection, 1);
 
     return out;
 }

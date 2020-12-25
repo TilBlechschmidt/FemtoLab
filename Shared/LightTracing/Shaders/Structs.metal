@@ -13,6 +13,12 @@ struct Primitive {
     packed_float2 dst;
 };
 
+struct Material {
+    packed_float3 sellmeier_coefficient_b;
+    packed_float3 sellmeier_coefficient_c;
+    float sellmeier_divisor;
+};
+
 /// Light ray.
 /// Can be inactive if previous rays did not intersect.
 /// This state is denoted by angle being NaN.
@@ -28,12 +34,12 @@ struct Ray {
 /// In that case, the location will be the source ray extrapolated to a distance of LARGE_NUMBER on each axis.
 struct Intersection {
     packed_float2 location;
-    uint32_t primitive_index;
+    uint16_t primitive_index;
     float surface_normal;
 };
 
 inline bool did_intersect(Intersection intersection) {
-    return intersection.primitive_index != __UINT32_MAX__;
+    return intersection.primitive_index != __UINT16_MAX__;
 }
 
 inline bool is_disabled(Ray ray) {

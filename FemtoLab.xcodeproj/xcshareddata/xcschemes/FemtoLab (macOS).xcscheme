@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "30106249258D578300014473"
-               BuildableName = "FemtoPhoto.app"
+               BuildableName = "FemtoLab.app"
                BlueprintName = "FemtoLab (macOS)"
                ReferencedContainer = "container:FemtoLab.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "30106249258D578300014473"
-            BuildableName = "FemtoPhoto.app"
+            BuildableName = "FemtoLab.app"
             BlueprintName = "FemtoLab (macOS)"
             ReferencedContainer = "container:FemtoLab.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "30106249258D578300014473"
-            BuildableName = "FemtoPhoto.app"
+            BuildableName = "FemtoLab.app"
             BlueprintName = "FemtoLab (macOS)"
             ReferencedContainer = "container:FemtoLab.xcodeproj">
          </BuildableReference>

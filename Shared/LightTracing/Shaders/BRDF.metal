@@ -22,8 +22,11 @@ float sampleMirror(const device Ray &ray, const device Intersection &intersectio
 
 float sampleDielectric(device Ray &ray, const device Intersection &intersection) {
     // Calculate wavelength dependent refraction indices for source and destination materials
-    float n_1 = 1; // sellmeierEquation(float3(1.43134930, 0.65054713, 5.3414021), float3(0.0052799261, 0.0142382647, 325.017834), ray.wavelength); // air
-    float n_2 = sellmeierEquation(float3(0.6961663, 0.4079426, 0.8974794), float3(0.0684043, 0.1162414, 9.896161), ray.wavelength); // fused silica
+//    float n_1 = 1; // sellmeierEquation(float3(1.43134930, 0.65054713, 5.3414021), float3(0.0052799261, 0.0142382647, 325.017834), ray.wavelength); // air
+//    float n_2 = sellmeierEquation(float3(0.6961663, 0.4079426, 0.8974794), float3(0.0684043, 0.1162414, 9.896161), ray.wavelength); // fused silica
+
+    float n_1 = sellmeierEquation(float3(sqrt(1.6215), sqrt(0.2563), sqrt(1.6445)), float3(sqrt(0.0122), sqrt(0.0596), sqrt(17.4688)), ray.wavelength) / 1.8;
+    float n_2 = 1;
 
     // Calculate the incidence angle
     // Done by "rotating" the whole coordinate system so that the surface normal is aligned with the x-axis
@@ -53,7 +56,7 @@ float sampleDielectric(device Ray &ray, const device Intersection &intersection)
     // Account for total internal reflection and reflection based on fresnels law (or rather its approximation)
     float random_number = rand(ray.rng_state);
     bool total_internal_reflection = isnan(theta_t);
-    bool fresnel_probabilistic_reflection = random_number > R;
+    bool fresnel_probabilistic_reflection = random_number < R;
 
     if (total_internal_reflection || fresnel_probabilistic_reflection)
         return sampleMirror(ray, intersection);

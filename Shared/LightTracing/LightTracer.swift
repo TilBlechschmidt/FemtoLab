@@ -13,7 +13,7 @@ fileprivate func generateRays(origin: Float2, count: Int, initialAngle: Double =
 
     return (0...count).map { i in
         let angle = Double(i) * deltaAngle + initialAngle
-        let wavelength = Float.random(in: 350...750)
+        let wavelength = Float.random(in: 350...780)
 
         return Ray(origin: origin, angle: Float(angle), wavelength: wavelength)
     }
@@ -36,7 +36,7 @@ struct TracerConfiguration {
         Int(Double(batchSize).squareRoot())
     }
 
-    init(batchSize: Int = 1024 * 1024, batchCount: Int = 1, lightPathLength: Int = 2) {
+    init(batchSize: Int = 1024 * 1024, batchCount: Int = 1, lightPathLength: Int = 10) {
         let batchSqrt = Double(batchSize).squareRoot()
         guard batchSqrt.rounded() == batchSqrt else { fatalError("Batch size is not a squared number!") }
 
@@ -68,6 +68,8 @@ class LightTracer {
     private let intersectionPipelineState: MTLComputePipelineState
     private let brdfPipelineState: MTLComputePipelineState
 
+    private let rayInitializationBuffer: MTLBuffer
+    private let primitiveCount: UInt16
     private let primitiveBuffer: MTLBuffer
     private let rayBuffer: MTLBuffer
     private let intersectionBuffer: MTLBuffer
@@ -94,26 +96,34 @@ class LightTracer {
         intersectionPipelineState = try device.makeComputePipelineState(function: computeIntersection)
         brdfPipelineState = try device.makeComputePipelineState(function: computeBRDF)
 
-        let primitiveCount = 1
-
+//        let initialAngle = -Double.pi / 4
+//        let range = Double.pi / 2
+//        let firstRayBatch = generateRays(origin: (0, 0), count: config.raysPerBounce, initialAngle: initialAngle, range: range)
+//        let primitivesData = [
+//            Primitive(src: (512, 512), dst: (512, -512)),
+//            Primitive(src: (-512, 0), dst: (512, 512)),
+//            Primitive(src: (512, -512), dst: (-512, -0)),
+//        ]
+//        let firstRayBatch = (0..<config.raysPerBounce).map { _ in
+//            Ray(origin: (-512, -200), angle: Float(Double.pi / 5), wavelength: Float.random(in: 350...750))
+//        }
+        let firstRayBatch = generateRays(origin: (-800, -160), count: config.raysPerBounce, initialAngle: Double.pi / 9, range: 0.0001)
         let primitivesData = [
-            Primitive(src: (512, 512), dst: (-512, 256)),
-//            Primitive(src: (512, 512), dst: (512, -512)), // right, top bottom
-//            Primitive(src: (512, -512), dst: (512, 512)), // right, bottom top
-//            Primitive(src: (0, 512), dst: (512, -512)), // right, left diagonal
-//            Primitive(src: (512, -512), dst: (0, 512)), // right, left diagonal
+            Primitive(src: (-256, -256), dst: (256, -256)),
+            Primitive(src: (256, -256), dst: (0, 256)),
+            Primitive(src: (0, 256), dst: (-256, -256)),
         ]
 
-        let firstRayBatch = generateRays(origin: (0, 0), count: config.raysPerBounce, initialAngle: -Double.pi / 4 + Double.pi / 2, range: Double.pi / 4)
-        let emptyRayBatches = Array(repeating: Ray.zero, count: config.raysPerBounce * (config.lightPathLength - 1))
-        let rayData = firstRayBatch + emptyRayBatches
+        primitiveCount = UInt16(primitivesData.count)
 
-        guard let primitiveBuffer = device.makeBuffer(bytes: primitivesData, length: Primitive.size * primitiveCount, options: [.storageModeShared]),
-              let rayBuffer = device.makeBuffer(bytes: rayData, length: Ray.size * config.rayCount, options: [.storageModeShared]),
-              let intersectionBuffer = device.makeBuffer(length: Intersection.size * config.rayCount, options: [.storageModePrivate]) else {
+        guard let rayInitializationBuffer = device.makeBuffer(bytes: firstRayBatch, length: Ray.stride * firstRayBatch.count, options: [.storageModeShared]),
+              let primitiveBuffer = device.makeBuffer(bytes: primitivesData, length: Primitive.stride * Int(primitiveCount), options: [.storageModeShared]),
+              let rayBuffer = device.makeBuffer(length: Ray.stride * config.rayCount, options: [.storageModePrivate]),
+              let intersectionBuffer = device.makeBuffer(length: Intersection.stride * config.rayCount, options: [.storageModePrivate]) else {
             throw Error.bufferAllocationFailed
         }
 
+        self.rayInitializationBuffer = rayInitializationBuffer
         self.primitiveBuffer = primitiveBuffer
         self.rayBuffer = rayBuffer
         self.intersectionBuffer = intersectionBuffer
@@ -141,6 +151,8 @@ class LightTracer {
 
         commandBuffer.label = "Light tracing batch #\(batchID)"
 
+        initializeRays(commandBuffer)
+
         for bounceID in 0..<config.lightPathLength {
             calculateIntersections(commandBuffer, batchID, bounceID)
             calculateBRDF(commandBuffer, batchID, bounceID)
@@ -148,6 +160,15 @@ class LightTracer {
 
         commandBuffer.commit()
         return commandBuffer
+    }
+
+    func initializeRays(_ commandBuffer: MTLCommandBuffer) {
+        guard let commandEncoder = commandBuffer.makeBlitCommandEncoder() else {
+            return
+        }
+
+        commandEncoder.copy(from: rayInitializationBuffer, sourceOffset: 0, to: rayBuffer, destinationOffset: 0, size: rayInitializationBuffer.length)
+        commandEncoder.endEncoding()
     }
 
     func calculateIntersections(_ commandBuffer: MTLCommandBuffer, _ batchID: Int, _ bounceID: Int) {
@@ -160,7 +181,8 @@ class LightTracer {
         commandEncoder.label = "Intersections bounce #\(bounceID)"
 
         commandEncoder.setComputePipelineState(intersectionPipelineState)
-        commandEncoder.setBuffers([primitiveBuffer, rayBuffer, intersectionBuffer], offsets: [0, indexOffset * Ray.size, indexOffset * Intersection.size])
+        commandEncoder.setBytes(values: [primitiveCount])
+        commandEncoder.setBuffers([primitiveBuffer, rayBuffer, intersectionBuffer], startingAtIndex: 1, offsets: [0, indexOffset * Ray.stride, indexOffset * Intersection.stride])
         commandEncoder.dispatch(sideLength: config.batchSideLength, computePipelineState: intersectionPipelineState)
         commandEncoder.endEncoding()
     }
@@ -177,7 +199,7 @@ class LightTracer {
         commandEncoder.label = "BRDF bounce #\(bounceID)"
 
         commandEncoder.setComputePipelineState(brdfPipelineState)
-        commandEncoder.setBuffers([rayBuffer, rayBuffer, intersectionBuffer], offsets: [sourceIndexOffset * Ray.size, destinationIndexOffset * Ray.size, sourceIndexOffset * Intersection.size])
+        commandEncoder.setBuffers([rayBuffer, rayBuffer, intersectionBuffer], offsets: [sourceIndexOffset * Ray.stride, destinationIndexOffset * Ray.stride, sourceIndexOffset * Intersection.stride])
         commandEncoder.dispatch(sideLength: config.batchSideLength, computePipelineState: brdfPipelineState)
         commandEncoder.endEncoding()
     }

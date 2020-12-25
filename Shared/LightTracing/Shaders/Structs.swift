@@ -15,7 +15,7 @@ struct Primitive {
     let src: Float2
     let dst: Float2
 
-    static let size = MemoryLayout<Primitive>.size
+    static let stride = MemoryLayout<Primitive>.stride
 }
 
 struct Ray {
@@ -25,14 +25,14 @@ struct Ray {
 
     let rngState: (Float, Float, Float, Float) = (Float.random(in: 0..<1), Float.random(in: 0..<1), Float.random(in: 0..<1), Float.random(in: 0..<1))
 
-    static let size = MemoryLayout<Ray>.size
+    static let stride = MemoryLayout<Ray>.stride
     static let zero = Ray(origin: (0, 0), angle: 0, wavelength: 0)
 }
 
 struct Intersection {
     let location: Float2
-    let primitiveIndex: UInt32
+    let primitiveIndex: UInt16
     let surfaceNormal: Float
 
-    static let size = MemoryLayout<Intersection>.size
+    static let stride = MemoryLayout<Intersection>.stride
 }
